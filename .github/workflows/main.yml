@@ -1,6 +1,11 @@
+name: IP to Discord
+
 on:
+  # Run on schedule (every 5 minutes)
   schedule:
-    - cron: '0 0 * * *'
+    - cron: "*/5 * * * *"
+  # Run manually
+  workflow_dispatch:
 
 jobs:
   get-ip:
