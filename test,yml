@@ -1,0 +1,26 @@
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+
+jobs:
+  get-ip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y curl jq
+
+      - name: Get IP address
+        run: |
+          IP=$(curl -s https://api.ipify.org)
+          echo "IP address: $IP"
+
+      - name: Send IP address to Discord
+        run: |
+          IP=$(curl -s https://api.ipify.org)
+          curl -H "Content-Type: application/json" -X POST -d '{"content": "'"$IP"'"}' ${{ secrets.WEBHOOK_URL }}
+
+      - name: Delay next run
+        run: sleep 1m
